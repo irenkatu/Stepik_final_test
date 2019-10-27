@@ -1,53 +1,35 @@
 from .base_page import BasePage
 from .locators import ProductPageLocators
-from selenium.common.exceptions import NoAlertPresentException
-import math
+
 
 class ProductPage(BasePage):
+    def find_book_name(self):
+        return self.browser.find_element(*ProductPageLocators.BOOK_TO_COMPARE).text
+        
+    def find_book_price(self):
+        return self.browser.find_element(*ProductPageLocators.PRICE_TO_COMPARE).text
  
-    def add_item_to_bascket(self):
-        button_add_to_basket = self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET_BUTTON)
-        button_add_to_basket.click()
-
-    def check_add_item_to_basket(self):
-        self.message_items_should_be_add_to_basket()
-        self.cost_should_be_eql_price()
-
-    def message_items_should_be_add_to_basket(self):
-        title_of_item = self.browser.find_element(*ProductPageLocators.TITLE_OF_THE_ITEM).text
-        message_after_add = self.browser.find_element(*ProductPageLocators.MESSAGE_AFTER_ADD_ITEM).text
-        assert title_of_item == message_after_add, \
-            "book title does not match message"
-
-    def cost_should_be_eql_price(self):
-        price_item = self.browser.find_element(*ProductPageLocators.PRICE_ITEM).text
-        basket_total = self.browser.find_element(*ProductPageLocators.BASKET_TOTAL).text
-        assert price_item == basket_total, \
-            "price of items does not eql basket total"
-
+    def add_item_to_cart(self):
+        # находим кнопку и добавляем товар в корзину
+        addButton = self.browser.find_element(*ProductPageLocators.ADD_TO_CART_BUTTON)
+        addButton.click()
     
-    def add_to_basket(self):
-            button = self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET_BUTTON)
-            button.click()
- 
-    def solve_quiz_and_get_code(self):
-            alert = self.browser.switch_to.alert
-            x = alert.text.split(" ")[2]
-            answer = str(math.log(abs((12 * math.sin(float(x))))))
-            alert.send_keys(answer)
-            alert.accept()
-            try:
-                alert = self.browser.switch_to.alert
-                alert_text = alert.text
-                print(f"Your code: {alert_text}")
-                alert.accept()
-            except NoAlertPresentException:
-                print("No second alert presented")
+    def right_book_and_right_price_message(self, bookToCompare, priceToCompare):
+        self.should_be_right_book_name(bookToCompare)
+        self.should_be_right_price_for_book(priceToCompare)
 
+    def should_be_right_book_name(self, bookToCompare):
+        # проверка сообщения о добавлении в корзину нужной книги
+        assert self.browser.find_element(*ProductPageLocators.BOOK_NAME).text == bookToCompare, "No added book in a cart!"
 
+    def should_be_right_price_for_book(self, priceToCompare):
+        # проверка сообщения о цене товара в корзине
+        assert self.browser.find_element(*ProductPageLocators.PRICE_NUMBER).text == priceToCompare, "Wrong price for the book!"
 
+    def should_not_be_success_message(self):
+        # проверка, что элемент не появился, так как не должен был
+        assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGE), "Success message is presented, but should not be"
 
-
-
-
-         
+    def should_disappear(self):
+        # проверка, что элемент исчез
+        assert self.is_disappeared(*ProductPageLocators.SUCCESS_MESSAGE), "Message is not disappeared, but should"
