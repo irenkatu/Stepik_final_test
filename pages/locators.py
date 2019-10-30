@@ -4,13 +4,13 @@ from selenium.webdriver.common.by import By
 class BasePageLocators():
     LOGIN_LINK = (By.CSS_SELECTOR, "#login_link")
     LOGIN_LINK_INVALID = (By.CSS_SELECTOR, "#login_link_inc")
-    BASKET_BUTTON_EN_GB = (By.LINK_TEXT, "View basket")
-    BASKET_BUTTON_RU = (By.LINK_TEXT, "Посмотреть корзину")
+    GO_TO_CART_BUTTON=(By.CSS_SELECTOR,"a[class='btn btn-default']")
     USER_ICON = (By.CSS_SELECTOR, ".icon-user")
 
 class MainPageLocators():
     MAIN_PAGE_LINK = "http://selenium1py.pythonanywhere.com/en-gb/"
     LOGIN_LINK = (By.ID, "login_link")
+  
 
 class LoginPageLocators():
     LOGIN_PAGE_LINK = "http://selenium1py.pythonanywhere.com/en-gb/accounts/login/"
@@ -31,13 +31,15 @@ class ProductPageLocators():
     BOOK_NAME = (By.CSS_SELECTOR, "#messages div:nth-child(1) strong")
     PRICE_NUMBER = (By.CSS_SELECTOR, "#messages div:nth-child(3) strong")
     SUCCESS_MESSAGE = (By.CSS_SELECTOR, "#messages div:nth-child(1) .alertinner")
+    GO_TO_CART_BUTTON=(By.CSS_SELECTOR,"a[href$='/basket/']")
 
 	
 class CartPageLocators():
-    BASKET_EMPTY = (By.ID, "content_inner")
-    BASKET_NOT_EMPTY = (By.CLASS_NAME, "basket-title")
-    SUBSTRING_BASKET_EN_GB = "Your basket is empty" #"Ваша корзина пуста"
+    BASKET_EMPTY = (By.CSS_SELECTOR, "div[id='content_inner']>p")
+    BASKET_NOT_EMPTY = (By.CLASS_NAME, "product_page")
+    SUBSTRING_BASKET_EN_GB = "Your basket is empty"    #"Ваша корзина пуста"
     SUBSTRING_BASKET_RU = "Ваша корзина пуста"
 
+        
 
 

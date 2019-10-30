@@ -3,9 +3,9 @@ from selenium.common.exceptions import NoAlertPresentException
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import math
 from .locators import BasePageLocators
 from .locators import ProductPageLocators
+from .locators import MainPageLocators
 
 class BasePage():
 
@@ -44,10 +44,22 @@ class BasePage():
         except TimeoutException:
             return False
         return True
+ 
+    def go_to_login_page(self):
+        link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
+        link.click()
+    
+    def go_to_cart_page(self):
+        Cart = self.browser.find_element(*BasePageLocators.GO_TO_CART_BUTTON)
+        Cart.click()
+    
 
+    def should_be_login_link(self):
+        assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
 
-
-
+    def should_be_authorized_user(self):
+        assert self.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented," \
+                                                                 " probably unauthorised user"
 
 
          
