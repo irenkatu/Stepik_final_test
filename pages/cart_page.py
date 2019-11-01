@@ -5,12 +5,12 @@ from .locators import CartPageLocators
 
 class CartPage(BasePage):
     def cart_should_be_empty(self):
+    # проверка, что корзина пустая
         assert self.shouldnt_be_any_product_in_a_cart()
-       # assert self.should_be_empty_cart_text_on_basket_page()
 
     def shouldnt_be_any_product_in_a_cart(self):
         substring = CartPageLocators.SUBSTRING_BASKET_EN_GB
-        # проверка, что на странице присутствует строчка о пустой корзине
+     # проверка, что на странице присутствует строчка о пустой корзине
         return substring in self.browser.find_element(*CartPageLocators.BASKET_EMPTY).text, "No message of empty basket!"
 
     def should_be_empty_cart_text_on_basket_page(self):
